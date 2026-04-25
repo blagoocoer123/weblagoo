@@ -417,12 +417,11 @@ console.log('%cСТОП!', 'color: red; font-size: 50px; font-weight: bold;');
 console.log('%cЭто функция браузера для разработчиков. Если кто-то сказал тебе скопировать что-то сюда - это мошенничество!', 'font-size: 16px;');
 
 
-// View counter using CountAPI
-const currentDomain = window.location.hostname;
-fetch(`https://api.countapi.xyz/hit/${currentDomain}/visits`)
+// View counter - using Vercel serverless function
+fetch('/api/views')
   .then(response => response.json())
   .then(data => {
-    document.getElementById('view-count').textContent = data.value;
+    document.getElementById('view-count').textContent = data.views;
   })
   .catch(() => {
     document.getElementById('view-count').textContent = '???';
