@@ -311,6 +311,13 @@ let currentTabIndex = 0;
 const tabs = ['info', 'about'];
 
 function switchTab(tabName) {
+  const mediaInfo = document.getElementById('media-info');
+  const mediaAbout = document.getElementById('media-about');
+  
+  // Fade out all media
+  if (mediaInfo) mediaInfo.style.opacity = '0';
+  if (mediaAbout) mediaAbout.style.opacity = '0';
+  
   tabBtns.forEach(btn => btn.classList.remove('active'));
   tabContents.forEach(content => content.classList.remove('active'));
   
@@ -323,6 +330,19 @@ function switchTab(tabName) {
   }
   
   currentTabIndex = tabs.indexOf(tabName);
+  
+  // Fade in corresponding media after tab switch
+  setTimeout(() => {
+    if (tabName === 'info' && mediaInfo) {
+      mediaInfo.classList.add('active');
+      mediaInfo.style.opacity = '1';
+      if (mediaAbout) mediaAbout.classList.remove('active');
+    } else if (tabName === 'about' && mediaAbout) {
+      mediaAbout.classList.add('active');
+      mediaAbout.style.opacity = '1';
+      if (mediaInfo) mediaInfo.classList.remove('active');
+    }
+  }, 250);
 }
 
 tabBtns.forEach(btn => {
@@ -395,3 +415,14 @@ document.addEventListener('keydown', (e) => {
 // Console warning
 console.log('%cСТОП!', 'color: red; font-size: 50px; font-weight: bold;');
 console.log('%cЭто функция браузера для разработчиков. Если кто-то сказал тебе скопировать что-то сюда - это мошенничество!', 'font-size: 16px;');
+
+
+// View counter using CountAPI
+fetch('https://api.countapi.xyz/hit/weblagoo.vercel.app/visits')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('view-count').textContent = data.value;
+  })
+  .catch(() => {
+    document.getElementById('view-count').textContent = '???';
+  });
