@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.9**
+Current version: **v5.1**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,14 @@ When making updates to the website:
 
 ## Version History
 
+- v5.1 - Darkened card backgrounds for better contrast and readability
+- v5.0 - Complete redesign: neomorphism, gradients, glow effects, animated borders
+- v4.5 - Further reduced player padding and spacing (ultra-compact layout)
+- v4.4 - Reduced spacing in music player (more compact layout)
+- v4.3 - Changed track info layout: title and artist on same line
+- v4.2 - Expanded track title to full width, increased font size for better readability
+- v4.1 - Restored particle animations only for music player (kept clean design for other cards)
+- v4.0 - Removed distracting particle animations, cleaner minimalist design
 - v3.9 - Changed color scheme from acid purple to soft blue/cyan (more pleasant colors)
 - v3.8 - Fixed purple particles overflow on mobile (hidden outside cards)
 - v3.7 - Removed TikTok social link

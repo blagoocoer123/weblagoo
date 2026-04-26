@@ -68,7 +68,12 @@ function createRandomCircle(rectangleElement) {
 }
 
 function createRandomCircles(rectangleElement) {
-  const numberOfCircles = Math.floor(Math.random() * 15) + 10; // Увеличил с 10+1 до 15+10
+  // Добавляем частицы только для плеера
+  if (!rectangleElement.classList.contains('spotifyplayer')) {
+    return;
+  }
+  
+  const numberOfCircles = Math.floor(Math.random() * 15) + 10;
 
   for (let i = 0; i < numberOfCircles; i++) {
     createRandomCircle(rectangleElement);
