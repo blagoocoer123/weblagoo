@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.6**
+Current version: **v3.7**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,7 @@ When making updates to the website:
 
 ## Version History
 
+- v3.7 - Removed TikTok social link
 - v3.6 - Added TikTok social link button
 - v3.5 - Further reduced Discord card size (minimal compact version)
 - v3.4 - Further reduced Discord card size
