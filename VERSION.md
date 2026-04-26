@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v1.2**
+Current version: **v2.3**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,11 @@ When making updates to the website:
 
 ## Version History
 
+- v2.3 - Configured Upstash Redis environment variables for view counter
+- v2.2 - Added Redis initialization check, improved error handling and logging for view counter
+- v2.1 - Reduced view counter cooldown from 5 minutes to 1 minute, improved IP detection
+- v2.0 - Fixed audio seek issue (sound disappearing when dragging progress bar), optimized loading with video poster
+- v1.9 - Applied custom Square721 font, adjusted media sizes
 - v1.2 - Fixed Redis connection, added version indicator
 - v1.1 - Added glassmorphism effect, increased particle count
 - v1.0 - Initial release

@@ -151,6 +151,7 @@ const tracks = [
 
 let currentTrack = 0;
 let targetVolume = 0.75;
+let isSeeking = false;
 
 // Set initial volume
 audio.volume = targetVolume;
@@ -197,10 +198,17 @@ playBtn.addEventListener('click', () => {
 
 // Fade out/in function
 function fadeVolume(fadeOut, callback) {
+  if (isSeeking) return; // Don't fade during seek
+  
   const step = targetVolume / 10;
   let currentStep = 0;
   
   const fadeInterval = setInterval(() => {
+    if (isSeeking) {
+      clearInterval(fadeInterval);
+      return;
+    }
+    
     if (fadeOut) {
       audio.volume = Math.max(0, targetVolume - (step * currentStep));
       currentStep++;
@@ -270,6 +278,14 @@ audio.addEventListener('ended', () => {
     loadTrack(currentTrack);
     audio.play();
   }
+});
+
+progressBar.addEventListener('mousedown', () => {
+  isSeeking = true;
+});
+
+progressBar.addEventListener('mouseup', () => {
+  isSeeking = false;
 });
 
 progressBar.addEventListener('input', () => {

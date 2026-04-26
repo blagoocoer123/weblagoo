@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+@font-face {
+    font-family: 'Square721';
+    src: url('../front/square721bdexbtrusbyme_bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +15,7 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Square721', 'Inter', Arial, sans-serif;
     position: relative;
     overflow: hidden;
     letter-spacing: -0.02em;
@@ -123,11 +130,11 @@ body {
 }
 
 .nickname {
-    font-family: "Inter", sans-serif;
+    font-family: "Square721", "Inter", sans-serif;
     color: white;
 	margin: 0;
 	margin-bottom: -10px;
-    font-weight: 600;
+    font-weight: bold;
     letter-spacing: -0.03em;
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2);
 }
@@ -598,6 +605,12 @@ body {
     margin: 0;
     border-radius: 20px;
     transition: opacity 0.5s ease-in-out;
+}
+
+.media-about {
+    width: 250px;
+    top: 220px;
+    left: 75px;
 }
 
 .media-item {
