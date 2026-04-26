@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.0**
+Current version: **v3.1**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,7 @@ When making updates to the website:
 
 ## Version History
 
+- v3.1 - Fixed mobile: button positioning and background video coverage (no white bars)
 - v3.0 - Adjusted "About" tab image position (moved down 20px)
 - v2.9 - Added spacing after "About" heading on desktop to prevent text overlap
 - v2.8 - Fixed mobile layout: text positioning, button placement, panel hidden by default
