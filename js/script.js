@@ -41,7 +41,7 @@ function createRandomCircle(rectangleElement) {
   circle.style.height = `${size}px`;
   circle.style.left = `${position.x}px`;
   circle.style.top = `${position.y}px`;
-  circle.style.backgroundColor = "rgba(100, 200, 255, 0.6)"; // Мягкий голубой
+  circle.style.backgroundColor = "rgba(74, 158, 255, 0.5)";
   circle.style.position = "absolute";
   circle.style.borderRadius = "50%";
   circle.style.filter = "blur(50px)";
@@ -124,11 +124,19 @@ enterScreen.addEventListener('click', () => {
     }
     // Start music
     const audio = document.getElementById('audio-element');
-    audio.play().catch(() => {});
-    const playIcon = document.querySelector('.play-icon');
-    const pauseIcon = document.querySelector('.pause-icon');
-    if (playIcon) playIcon.style.display = 'none';
-    if (pauseIcon) pauseIcon.style.display = 'block';
+    audio.play().then(() => {
+      // Music started successfully
+      if (playIcon) playIcon.style.display = 'none';
+      if (pauseIcon) pauseIcon.style.display = 'block';
+      if (islandPlayIcon) islandPlayIcon.style.display = 'none';
+      if (islandPauseIcon) islandPauseIcon.style.display = 'block';
+    }).catch(() => {
+      // Autoplay blocked, keep play icons visible
+      if (playIcon) playIcon.style.display = 'block';
+      if (pauseIcon) pauseIcon.style.display = 'none';
+      if (islandPlayIcon) islandPlayIcon.style.display = 'block';
+      if (islandPauseIcon) islandPauseIcon.style.display = 'none';
+    });
   }, 500);
 });
 
@@ -247,8 +255,8 @@ if (islandPlayBtn) {
 audio.addEventListener('play', () => {
   playIcon.style.display = 'none';
   pauseIcon.style.display = 'block';
-  islandPlayIcon.style.display = 'none';
-  islandPauseIcon.style.display = 'block';
+  if (islandPlayIcon) islandPlayIcon.style.display = 'none';
+  if (islandPauseIcon) islandPauseIcon.style.display = 'block';
   if (visualizer) {
     visualizer.classList.add('active');
   }
@@ -266,8 +274,8 @@ audio.addEventListener('play', () => {
 audio.addEventListener('pause', () => {
   playIcon.style.display = 'block';
   pauseIcon.style.display = 'none';
-  islandPlayIcon.style.display = 'block';
-  islandPauseIcon.style.display = 'none';
+  if (islandPlayIcon) islandPlayIcon.style.display = 'block';
+  if (islandPauseIcon) islandPauseIcon.style.display = 'none';
   if (visualizer) {
     visualizer.classList.remove('active');
   }
@@ -284,8 +292,26 @@ audio.addEventListener('pause', () => {
 
 // Try to autoplay
 document.addEventListener('DOMContentLoaded', () => {
+  // Sync initial state
+  function syncPlayerState() {
+    if (audio.paused) {
+      if (playIcon) playIcon.style.display = 'block';
+      if (pauseIcon) pauseIcon.style.display = 'none';
+      if (islandPlayIcon) islandPlayIcon.style.display = 'block';
+      if (islandPauseIcon) islandPauseIcon.style.display = 'none';
+    } else {
+      if (playIcon) playIcon.style.display = 'none';
+      if (pauseIcon) pauseIcon.style.display = 'block';
+      if (islandPlayIcon) islandPlayIcon.style.display = 'none';
+      if (islandPauseIcon) islandPauseIcon.style.display = 'block';
+    }
+  }
+  
+  syncPlayerState();
+  
   audio.play().catch(() => {
     // Autoplay blocked
+    syncPlayerState();
   });
 });
 
@@ -503,23 +529,39 @@ setTimeout(() => {
     const x = (e.clientX / window.innerWidth - 0.5) * 2;
     const y = (e.clientY / window.innerHeight - 0.5) * 2;
     
-    const rotateY = x * 15;
-    const rotateX = -y * 15;
+    const rotateY = x * 20;
+    const rotateX = -y * 20;
     
     const transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     
-    if (rectangle) rectangle.style.transform = transform;
-    if (spotifyPlayer) spotifyPlayer.style.transform = transform;
+    if (rectangle) {
+      rectangle.style.transition = 'none';
+      rectangle.style.transform = transform;
+    }
+    if (spotifyPlayer) {
+      spotifyPlayer.style.transition = 'none';
+      spotifyPlayer.style.transform = transform;
+    }
     if (rectangleRight && rectangleRight.classList.contains('show')) {
+      rectangleRight.style.transition = 'none';
       rectangleRight.style.transform = transform;
     }
   });
 
   document.body.addEventListener('mouseleave', () => {
     const resetTransform = 'perspective(1000px) rotateX(0) rotateY(0)';
-    if (rectangle) rectangle.style.transform = resetTransform;
-    if (spotifyPlayer) spotifyPlayer.style.transform = resetTransform;
-    if (rectangleRight) rectangleRight.style.transform = resetTransform;
+    if (rectangle) {
+      rectangle.style.transition = 'transform 0.5s ease-out';
+      rectangle.style.transform = resetTransform;
+    }
+    if (spotifyPlayer) {
+      spotifyPlayer.style.transition = 'transform 0.5s ease-out';
+      spotifyPlayer.style.transform = resetTransform;
+    }
+    if (rectangleRight) {
+      rectangleRight.style.transition = 'transform 0.5s ease-out';
+      rectangleRight.style.transform = resetTransform;
+    }
   });
 }, 1000);
 
