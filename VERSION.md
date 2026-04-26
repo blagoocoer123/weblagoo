@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.8**
+Current version: **v3.9**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,7 @@ When making updates to the website:
 
 ## Version History
 
+- v3.9 - Changed color scheme from acid purple to soft blue/cyan (more pleasant colors)
 - v3.8 - Fixed purple particles overflow on mobile (hidden outside cards)
 - v3.7 - Removed TikTok social link
 - v3.6 - Added TikTok social link button

@@ -32,7 +32,7 @@ function getRandomPosition(rectangle, size) {
 function createRandomCircle(rectangleElement) {
   const rectangle = rectangleElement;
   const circle = document.createElement("div");
-  const size = Math.floor(Math.random() * 200) + 50; // Увеличил с 100+10 до 200+50
+  const size = Math.floor(Math.random() * 200) + 50;
   const position = getRandomPosition(rectangle, size);
   const duration = 5 + Math.random() * 5;
   const finalPosition = getRandomPosition(rectangle, size);
@@ -41,7 +41,7 @@ function createRandomCircle(rectangleElement) {
   circle.style.height = `${size}px`;
   circle.style.left = `${position.x}px`;
   circle.style.top = `${position.y}px`;
-  circle.style.backgroundColor = "rgba(255, 0, 255, 1)";
+  circle.style.backgroundColor = "rgba(100, 200, 255, 0.6)"; // Мягкий голубой
   circle.style.position = "absolute";
   circle.style.borderRadius = "50%";
   circle.style.filter = "blur(50px)";
