@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v2.7**
+Current version: **v2.9**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,8 @@ When making updates to the website:
 
 ## Version History
 
+- v2.9 - Added spacing after "About" heading on desktop to prevent text overlap
+- v2.8 - Fixed mobile layout: text positioning, button placement, panel hidden by default
 - v2.7 - Fixed expand button visibility on mobile devices
 - v2.6 - Made expand button more visible on mobile (larger, purple highlight)
 - v2.5 - Increased view counter cooldown to 24 hours per IP (unique daily visitors)

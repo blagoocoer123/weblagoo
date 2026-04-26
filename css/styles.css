@@ -674,7 +674,7 @@ body {
     color: white;
     font-size: 14px;
     position: absolute;
-    top: 45px;
+    top: 55px;
     left: 10px;
     margin: 0;
     padding: 20px;
@@ -840,17 +840,19 @@ body {
         max-width: 350px;
         height: auto;
         min-height: 500px;
-        margin: 0 auto;
+        margin: 15px auto 0;
         opacity: 0;
         max-height: 0;
         overflow: hidden;
+        padding: 0;
         transform: translateX(0);
-        transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+        transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
     }
 
     .rectangle-right.show {
         opacity: 1;
-        max-height: 600px;
+        max-height: 650px;
+        padding: 20px;
         transform: translateX(0);
     }
 
@@ -865,35 +867,40 @@ body {
     .hithere {
         font-size: 18px;
         max-width: 90%;
+        padding: 15px 20px;
     }
 
     .nometa {
         font-size: 13px;
-        top: 50px;
+        top: 45px;
+        padding: 15px 20px;
     }
 
     .email {
         font-size: 13px;
-        top: 75px;
+        top: 70px;
         max-width: 90%;
+        padding: 15px 20px;
     }
 
     .about-text {
         font-size: 13px;
-        top: 40px;
+        top: 35px;
         max-width: 90%;
+        padding: 15px 20px;
+        line-height: 1.6;
     }
 
     .ayanami {
         width: 250px;
-        top: 160px;
+        top: 200px;
         left: 50%;
         transform: translateX(-50%);
     }
 
     .media-about {
         width: 200px;
-        top: 180px;
+        top: 220px;
         left: 50%;
         transform: translateX(-50%);
     }
