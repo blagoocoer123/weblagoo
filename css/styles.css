@@ -12,6 +12,7 @@ body {
     position: relative;
     overflow: hidden;
     letter-spacing: -0.02em;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 #enter-screen {
@@ -128,6 +129,7 @@ body {
 	margin-bottom: -10px;
     font-weight: 600;
     letter-spacing: -0.03em;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2);
 }
 
 .discord {
@@ -534,6 +536,7 @@ body {
     max-width: 250px;
     font-weight: 600;
     letter-spacing: -0.03em;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2);
 }
 
 .nometa {
@@ -555,6 +558,7 @@ body {
     margin: 0;
     padding: 20px;
     line-height: 1.4;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 .view-counter {
@@ -663,6 +667,7 @@ body {
     padding: 20px;
     line-height: 1.5;
     max-width: 360px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 .nav-arrows {
