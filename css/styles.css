@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -7,9 +8,10 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     position: relative;
     overflow: hidden;
+    letter-spacing: -0.02em;
 }
 
 #enter-screen {
@@ -120,10 +122,12 @@ body {
 }
 
 .nickname {
-    font-family: "Roboto", sans-serif;
+    font-family: "Inter", sans-serif;
     color: white;
 	margin: 0;
 	margin-bottom: -10px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
 }
 
 .discord {
@@ -260,11 +264,12 @@ body {
 .track-title {
   color: white;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 2px;
+  letter-spacing: -0.02em;
 }
 
 .track-artist {
@@ -527,6 +532,8 @@ body {
     margin: 0;
     padding: 20px;
     max-width: 250px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
 }
 
 .nometa {
