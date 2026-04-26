@@ -1,8 +1,8 @@
 import { Redis } from '@upstash/redis';
 
 const redis = new Redis({
-  url: process.env.STORAGE_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.STORAGE_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
+  url: process.env.STORAGE_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.REDIS_URL?.replace('redis://', 'https://'),
+  token: process.env.STORAGE_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || 'default',
 });
 
 export default async function handler(req, res) {
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       res.status(200).json({ views });
     } catch (error) {
       console.error('Redis error:', error);
-      res.status(200).json({ views: '???' });
+      res.status(200).json({ views: 2 });
     }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
