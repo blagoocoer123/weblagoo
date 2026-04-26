@@ -68,10 +68,7 @@ function createRandomCircle(rectangleElement) {
 }
 
 function createRandomCircles(rectangleElement) {
-  // Добавляем частицы только для плеера
-  if (!rectangleElement.classList.contains('spotifyplayer')) {
-    return;
-  }
+  if (!rectangleElement) return;
   
   const numberOfCircles = Math.floor(Math.random() * 15) + 10;
 
@@ -81,11 +78,9 @@ function createRandomCircles(rectangleElement) {
 }
 
 const rectangleElement = document.querySelector(".rectangle");
-const spotifyPlayerElement = document.querySelector(".spotifyplayer");
 const rectangle2Element = document.querySelector(".rectangle-right");
 
 createRandomCircles(rectangleElement);
-createRandomCircles(spotifyPlayerElement);
 createRandomCircles(rectangle2Element);
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -123,16 +118,31 @@ enterScreen.addEventListener('click', () => {
   
   setTimeout(() => {
     enterScreen.style.display = 'none';
+    // Show dynamic island
+    if (dynamicIsland) {
+      dynamicIsland.style.display = 'block';
+    }
     // Start music
     const audio = document.getElementById('audio-element');
     audio.play().catch(() => {});
     const playIcon = document.querySelector('.play-icon');
     const pauseIcon = document.querySelector('.pause-icon');
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'block';
+    if (playIcon) playIcon.style.display = 'none';
+    if (pauseIcon) pauseIcon.style.display = 'block';
   }, 500);
 });
 
+
+// Dynamic Island & Player Modal
+const dynamicIsland = document.getElementById('dynamic-island');
+const playerModal = document.getElementById('player-modal');
+const modalClose = document.getElementById('modal-close');
+const islandPlayBtn = document.querySelector('.island-play-btn');
+const islandPlayIcon = document.querySelector('.island-play-icon');
+const islandPauseIcon = document.querySelector('.island-pause-icon');
+const islandTitle = document.querySelector('.island-title');
+const islandArtist = document.querySelector('.island-artist');
+const islandVisualizer = document.querySelector('.island-visualizer');
 
 // Audio Player
 const audio = document.getElementById('audio-element');
@@ -175,15 +185,101 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-// Check if audio is playing and update icon
+// Audio visualizer
+const visualizer = document.querySelector('.audio-visualizer');
+
+// Update track info in dynamic island
+function updateIslandTrackInfo() {
+  const track = tracks[currentTrack];
+  if (islandTitle) islandTitle.textContent = track.title;
+  if (islandArtist) islandArtist.textContent = track.artist;
+  if (trackTitle) trackTitle.textContent = track.title;
+  if (trackArtist) trackArtist.textContent = track.artist;
+}
+
+// Dynamic Island click to toggle modal
+if (dynamicIsland) {
+  dynamicIsland.addEventListener('click', (e) => {
+    // Don't toggle if clicking the play button
+    if (e.target.closest('.island-play-btn')) {
+      return;
+    }
+    
+    if (playerModal.classList.contains('active')) {
+      // Close with animation
+      playerModal.classList.add('closing');
+      setTimeout(() => {
+        playerModal.classList.remove('active', 'closing');
+      }, 400);
+    } else {
+      // Open with animation
+      playerModal.classList.add('active');
+    }
+  });
+}
+
+// Click on modal to close it
+if (playerModal) {
+  playerModal.addEventListener('click', (e) => {
+    // Only close if clicking outside the modal content
+    if (e.target === playerModal) {
+      playerModal.classList.add('closing');
+      setTimeout(() => {
+        playerModal.classList.remove('active', 'closing');
+      }, 400);
+    }
+  });
+}
+
+// Island play button
+if (islandPlayBtn) {
+  islandPlayBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  });
+}
+
+// Check if audio is playing and update icon + visualizer
 audio.addEventListener('play', () => {
   playIcon.style.display = 'none';
   pauseIcon.style.display = 'block';
+  islandPlayIcon.style.display = 'none';
+  islandPauseIcon.style.display = 'block';
+  if (visualizer) {
+    visualizer.classList.add('active');
+  }
+  if (islandVisualizer) {
+    islandVisualizer.style.opacity = '1';
+    // Add playing class to island bars
+    const islandBars = document.querySelectorAll('.island-bar');
+    islandBars.forEach(bar => {
+      bar.classList.add('playing');
+      bar.classList.remove('paused');
+    });
+  }
 });
 
 audio.addEventListener('pause', () => {
   playIcon.style.display = 'block';
   pauseIcon.style.display = 'none';
+  islandPlayIcon.style.display = 'block';
+  islandPauseIcon.style.display = 'none';
+  if (visualizer) {
+    visualizer.classList.remove('active');
+  }
+  if (islandVisualizer) {
+    // Keep visualizer visible but change to paused state
+    islandVisualizer.style.opacity = '1';
+    const islandBars = document.querySelectorAll('.island-bar');
+    islandBars.forEach(bar => {
+      bar.classList.remove('playing');
+      bar.classList.add('paused');
+    });
+  }
 });
 
 // Try to autoplay
@@ -241,6 +337,7 @@ prevBtn.addEventListener('click', () => {
   fadeVolume(true, () => {
     currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
     loadTrack(currentTrack);
+    updateIslandTrackInfo();
     audio.play();
   });
 });
@@ -249,6 +346,7 @@ nextBtn.addEventListener('click', () => {
   fadeVolume(true, () => {
     currentTrack = (currentTrack + 1) % tracks.length;
     loadTrack(currentTrack);
+    updateIslandTrackInfo();
     audio.play();
   });
 });
