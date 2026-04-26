@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v2.4**
+Current version: **v2.6**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,8 @@ When making updates to the website:
 
 ## Version History
 
+- v2.6 - Made expand button more visible on mobile (larger, purple highlight)
+- v2.5 - Increased view counter cooldown to 24 hours per IP (unique daily visitors)
 - v2.4 - Added mobile responsive design for phones and tablets
 - v2.3 - Configured Upstash Redis environment variables for view counter
 - v2.2 - Added Redis initialization check, improved error handling and logging for view counter

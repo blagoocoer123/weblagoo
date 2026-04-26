@@ -38,10 +38,10 @@ export default async function handler(req, res) {
       const lastVisit = await redis.get(visitorKey);
       console.log('Last visit:', lastVisit, 'Now:', now);
       
-      // Only count if last visit was more than 1 minute ago (60000ms)
-      if (!lastVisit || now - parseInt(lastVisit) > 60000) {
+      // Only count if last visit was more than 24 hours ago (86400000ms = 24 hours)
+      if (!lastVisit || now - parseInt(lastVisit) > 86400000) {
         const newCount = await redis.incr('viewCount');
-        await redis.set(visitorKey, now.toString(), { ex: 60 }); // Expire in 1 minute
+        await redis.set(visitorKey, now.toString(), { ex: 86400 }); // Expire in 24 hours
         console.log('View counted! New count:', newCount);
       } else {
         console.log('Cooldown active, not counting');

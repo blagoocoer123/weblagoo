@@ -817,6 +817,15 @@ body {
         right: 0;
         margin: 15px auto;
         cursor: pointer;
+        width: 60px;
+        height: 60px;
+        background: rgba(124, 58, 237, 0.6);
+        border: 2px solid rgba(124, 58, 237, 0.8);
+    }
+
+    .rectangle-button img {
+        width: 36px;
+        height: 36px;
     }
 
     .rectangle-right {
