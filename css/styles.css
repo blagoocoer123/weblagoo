@@ -821,11 +821,16 @@ body {
         height: 60px;
         background: rgba(124, 58, 237, 0.6);
         border: 2px solid rgba(124, 58, 237, 0.8);
+        display: flex;
     }
 
     .rectangle-button img {
         width: 36px;
         height: 36px;
+    }
+
+    .arrow.rotate {
+        transform: rotate(90deg);
     }
 
     .rectangle-right {
