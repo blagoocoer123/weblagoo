@@ -741,3 +741,222 @@ body {
     z-index: 9999;
     font-family: monospace;
 }
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .container {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 10px;
+        overflow-y: auto;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .left-content {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .right-content {
+        width: 100%;
+        max-width: 350px;
+        margin-left: 0;
+        position: relative;
+    }
+
+    .rectangle {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        min-height: 380px;
+        margin: 0 auto 15px;
+    }
+
+    .avatar {
+        width: 180px;
+        height: 180px;
+    }
+
+    .nickname {
+        font-size: 20px;
+    }
+
+    .discord {
+        min-width: 180px;
+        height: 30px;
+    }
+
+    .social-links img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .social-links img[alt="YouTube"] {
+        width: 35px;
+        height: 24px;
+    }
+
+    .spotifyplayer {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .rectangle-button {
+        position: relative;
+        right: 0;
+        margin: 15px auto;
+        cursor: pointer;
+    }
+
+    .rectangle-right {
+        position: relative;
+        left: 0;
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        min-height: 500px;
+        margin: 0 auto;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transform: translateX(0);
+        transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+    }
+
+    .rectangle-right.show {
+        opacity: 1;
+        max-height: 600px;
+        transform: translateX(0);
+    }
+
+    .move-left {
+        transform: translateX(0);
+    }
+
+    .move-right {
+        transform: translateX(0);
+    }
+
+    .hithere {
+        font-size: 18px;
+        max-width: 90%;
+    }
+
+    .nometa {
+        font-size: 13px;
+        top: 50px;
+    }
+
+    .email {
+        font-size: 13px;
+        top: 75px;
+        max-width: 90%;
+    }
+
+    .about-text {
+        font-size: 13px;
+        top: 40px;
+        max-width: 90%;
+    }
+
+    .ayanami {
+        width: 250px;
+        top: 160px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .media-about {
+        width: 200px;
+        top: 180px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .tabs-container {
+        top: 10px;
+        right: 10px;
+    }
+
+    .tab-btn {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+
+    .nav-arrows {
+        bottom: 15px;
+        gap: 20px;
+    }
+
+    .arrow-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .view-counter {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .enter-text {
+        font-size: 36px;
+    }
+
+    .version {
+        font-size: 9px;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    /* Disable 3D tilt effect on mobile */
+    .rectangle, .spotifyplayer, .rectangle-right {
+        transform: perspective(1000px) rotateX(0) rotateY(0) !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .rectangle, .spotifyplayer, .rectangle-right {
+        max-width: 95%;
+    }
+
+    .avatar {
+        width: 160px;
+        height: 160px;
+    }
+
+    .nickname {
+        font-size: 18px;
+    }
+
+    .social-links img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .hithere {
+        font-size: 16px;
+    }
+
+    .email, .about-text, .nometa {
+        font-size: 12px;
+    }
+
+    .ayanami {
+        width: 220px;
+    }
+
+    .media-about {
+        width: 180px;
+    }
+}

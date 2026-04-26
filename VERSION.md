@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v2.3**
+Current version: **v2.4**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,7 @@ When making updates to the website:
 
 ## Version History
 
+- v2.4 - Added mobile responsive design for phones and tablets
 - v2.3 - Configured Upstash Redis environment variables for view counter
 - v2.2 - Added Redis initialization check, improved error handling and logging for view counter
 - v2.1 - Reduced view counter cooldown from 5 minutes to 1 minute, improved IP detection
