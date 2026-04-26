@@ -306,11 +306,20 @@ volumeBar.addEventListener('input', () => {
 });
 
 
-// Discord copy to clipboard
+// Discord copy to clipboard with animation
 const discordCopy = document.getElementById('discord-copy');
 if (discordCopy) {
+  discordCopy.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  
   discordCopy.addEventListener('click', (e) => {
     e.preventDefault();
+    
+    // Add bounce animation
+    discordCopy.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      discordCopy.style.transform = 'scale(1)';
+    }, 200);
+    
     navigator.clipboard.writeText('b1agoo').then(() => {
       const originalTitle = discordCopy.getAttribute('title');
       discordCopy.setAttribute('title', 'Copied!');
@@ -438,12 +447,56 @@ console.log('%cСТОП!', 'color: red; font-size: 50px; font-weight: bold;');
 console.log('%cЭто функция браузера для разработчиков. Если кто-то сказал тебе скопировать что-то сюда - это мошенничество!', 'font-size: 16px;');
 
 
-// View counter - using Vercel serverless function
-fetch('/api/views')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('view-count').textContent = data.views;
-  })
-  .catch(() => {
-    document.getElementById('view-count').textContent = '???';
-  });
+// View counter - using Vercel serverless function with real-time updates
+let currentViews = 0;
+
+function animateCounter(element, start, end, duration) {
+  const range = end - start;
+  const increment = range / (duration / 16);
+  let current = start;
+  
+  const timer = setInterval(() => {
+    current += increment;
+    if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+      current = end;
+      clearInterval(timer);
+    }
+    element.textContent = Math.floor(current);
+  }, 16);
+}
+
+function updateViewCounter() {
+  const viewCountElement = document.getElementById('view-count');
+  const viewCounterContainer = document.querySelector('.view-counter');
+  
+  fetch('/api/views')
+    .then(response => response.json())
+    .then(data => {
+      const newViews = data.views;
+      
+      if (newViews !== currentViews) {
+        // Add updating animation
+        viewCounterContainer.classList.add('updating');
+        
+        // Animate the number change
+        animateCounter(viewCountElement, currentViews, newViews, 500);
+        currentViews = newViews;
+        
+        // Remove animation class after transition
+        setTimeout(() => {
+          viewCounterContainer.classList.remove('updating');
+        }, 300);
+      }
+    })
+    .catch(() => {
+      if (viewCountElement.textContent !== '???') {
+        viewCountElement.textContent = '???';
+      }
+    });
+}
+
+// Initial load
+updateViewCounter();
+
+// Update every 5 seconds
+setInterval(updateViewCounter, 5000);
