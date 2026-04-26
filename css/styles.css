@@ -825,6 +825,7 @@ body {
         height: auto;
         min-height: 380px;
         margin: 0 auto 15px;
+        overflow: hidden;
     }
 
     .avatar {
@@ -855,6 +856,7 @@ body {
         width: 100%;
         max-width: 350px;
         margin: 0 auto 0;
+        overflow: hidden;
     }
 
     .rectangle-button {

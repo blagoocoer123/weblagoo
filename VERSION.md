@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.7**
+Current version: **v3.8**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,7 @@ When making updates to the website:
 
 ## Version History
 
+- v3.8 - Fixed purple particles overflow on mobile (hidden outside cards)
 - v3.7 - Removed TikTok social link
 - v3.6 - Added TikTok social link button
 - v3.5 - Further reduced Discord card size (minimal compact version)
