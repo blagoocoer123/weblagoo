@@ -1,6 +1,6 @@
 # Version Control
 
-Current version: **v3.1**
+Current version: **v3.6**
 
 ## Instructions for AI Assistants
 
@@ -12,6 +12,11 @@ When making updates to the website:
 
 ## Version History
 
+- v3.6 - Added TikTok social link button
+- v3.5 - Further reduced Discord card size (minimal compact version)
+- v3.4 - Further reduced Discord card size
+- v3.3 - Reduced Discord card size (smaller padding, icon, and text)
+- v3.2 - Applied Square721 font to Discord card text for consistency
 - v3.1 - Fixed mobile: button positioning and background video coverage (no white bars)
 - v3.0 - Adjusted "About" tab image position (moved down 20px)
 - v2.9 - Added spacing after "About" heading on desktop to prevent text overlap
