@@ -1,4 +1,6 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,15 +11,15 @@ export default async function handler(req, res) {
     const now = Date.now();
     
     // Check last visit time
-    const lastVisit = await kv.get(visitorKey);
+    const lastVisit = await redis.get(visitorKey);
     
     // Only count if last visit was more than 5 minutes ago
     if (!lastVisit || now - lastVisit > 300000) {
-      await kv.incr('viewCount');
-      await kv.set(visitorKey, now, { ex: 300 }); // Expire in 5 minutes
+      await redis.incr('viewCount');
+      await redis.set(visitorKey, now, { ex: 300 }); // Expire in 5 minutes
     }
     
-    const views = await kv.get('viewCount') || 2;
+    const views = await redis.get('viewCount') || 2;
     res.status(200).json({ views });
   } else {
     res.status(405).json({ error: 'Method not allowed' });

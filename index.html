@@ -58,7 +58,7 @@
 						<div class="player-info">
 							<img class="track-cover" src="media/avatar.png" alt="Track Cover">
 							<div class="track-details">
-								<div class="track-title">stopplayin</div>
+								<div class="track-title">wokeup</div>
 								<div class="track-artist">blagoo</div>
 							</div>
 						</div>
@@ -96,7 +96,7 @@
 						</div>
 					</div>
 					<audio id="audio-element" autoplay>
-						<source src="song/stopplayin.mp3" type="audio/mpeg">
+						<source src="song/wokeup.mp3" type="audio/mpeg">
 					</audio>
 				</div>
 			</div>
@@ -113,7 +113,7 @@
 					</div>
 					<div class="tab-content" id="about-tab">
 						<h1 class="hithere">Немного о себе</h1>
-						<p class="about-text">Мне 16 учусь в школе. Занимаюсь изучением иишок пишу,промпты под разные штуки чтобы автоматизировать различные задачи. Делаю своих ботов и тд для упрощения работы чего либо .</p>
+						<p class="about-text">Мне 16 учусь в школе. Занимаюсь изучением иишок пишу,промпты под разные штуки чтобы автоматизировать различные задачи. Делаю своих ботов и тд для упрощения работы чего либо.</p>
 					</div>
 					<div class="nav-arrows">
 						<button class="arrow-btn prev-tab">
@@ -139,30 +139,40 @@
 		</div>
 	</div>
     <script>
-        let title = "weblagoo";
-        let index = 0;
-        let isDeleting = false;
+        const title = "weblagoo";
+        let charIndex = 0;
+        let isTyping = true;
+        let isPaused = false;
         
-        function typeTitle() {
-            if (!isDeleting && index < title.length) {
-                index++;
-                document.title = title.substring(0, index);
-                setTimeout(typeTitle, 300);
-            } else if (!isDeleting && index === title.length) {
-                setTimeout(() => {
-                    isDeleting = true;
-                    typeTitle();
-                }, 3000);
-            } else if (isDeleting && index > 0) {
-                document.title = title.substring(0, index - 1);
-                index--;
-                setTimeout(typeTitle, 200);
-            } else if (isDeleting && index === 0) {
-                isDeleting = false;
-                setTimeout(typeTitle, 300);
+        document.title = "";
+        
+        setInterval(() => {
+            if (isPaused) return;
+            
+            if (isTyping) {
+                if (charIndex < title.length) {
+                    charIndex++;
+                    document.title = title.substring(0, charIndex);
+                } else {
+                    isPaused = true;
+                    setTimeout(() => {
+                        isPaused = false;
+                        isTyping = false;
+                    }, 3000);
+                }
+            } else {
+                if (charIndex > 0) {
+                    charIndex--;
+                    document.title = title.substring(0, charIndex);
+                } else {
+                    isPaused = true;
+                    setTimeout(() => {
+                        isPaused = false;
+                        isTyping = true;
+                    }, 500);
+                }
             }
-        }
-        typeTitle();
+        }, 200);
     </script>
     <script src="js/script.js"></script>
 </body>

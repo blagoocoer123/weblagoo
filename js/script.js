@@ -32,7 +32,7 @@ function getRandomPosition(rectangle, size) {
 function createRandomCircle(rectangleElement) {
   const rectangle = rectangleElement;
   const circle = document.createElement("div");
-  const size = Math.floor(Math.random() * 100) + 10;
+  const size = Math.floor(Math.random() * 200) + 50; // Увеличил с 100+10 до 200+50
   const position = getRandomPosition(rectangle, size);
   const duration = 5 + Math.random() * 5;
   const finalPosition = getRandomPosition(rectangle, size);
@@ -68,7 +68,7 @@ function createRandomCircle(rectangleElement) {
 }
 
 function createRandomCircles(rectangleElement) {
-  const numberOfCircles = Math.floor(Math.random() * 10) + 1;
+  const numberOfCircles = Math.floor(Math.random() * 15) + 10; // Увеличил с 10+1 до 15+10
 
   for (let i = 0; i < numberOfCircles; i++) {
     createRandomCircle(rectangleElement);
@@ -145,8 +145,8 @@ const playIcon = document.querySelector('.play-icon');
 const pauseIcon = document.querySelector('.pause-icon');
 
 const tracks = [
-  { src: 'song/stopplayin.mp3', title: 'stopplayin', artist: 'blagoo' },
-  { src: 'song/wokeup.mp3', title: 'wokeup', artist: 'blagoo' }
+  { src: 'song/wokeup.mp3', title: 'wokeup', artist: 'blagoo' },
+  { src: 'song/stopplayin.mp3', title: 'stopplayin', artist: 'blagoo' }
 ];
 
 let currentTrack = 0;
