@@ -299,14 +299,43 @@ function togglePlayerModal() {
 }
 
 // Click on modal to close it
+let modalTouchStartY = 0;
+let modalTouchEndY = 0;
+
 if (playerModal) {
-  playerModal.addEventListener('click', (e) => {
+  // Handle touch events for mobile
+  playerModal.addEventListener('touchstart', (e) => {
+    modalTouchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  
+  playerModal.addEventListener('touchend', (e) => {
     // Only close if clicking outside the modal content
     if (e.target === playerModal) {
-      playerModal.classList.add('closing');
-      setTimeout(() => {
-        playerModal.classList.remove('active', 'closing');
-      }, 400);
+      modalTouchEndY = e.changedTouches[0].clientY;
+      const touchDiff = Math.abs(modalTouchEndY - modalTouchStartY);
+      
+      // Only trigger if touch movement is less than 10px (not a scroll)
+      if (touchDiff < 10) {
+        e.preventDefault();
+        playerModal.classList.add('closing');
+        setTimeout(() => {
+          playerModal.classList.remove('active', 'closing');
+        }, 400);
+      }
+    }
+  });
+  
+  // Handle click events for desktop
+  playerModal.addEventListener('click', (e) => {
+    // Only handle click on desktop (non-touch devices)
+    if (!('ontouchstart' in window)) {
+      // Only close if clicking outside the modal content
+      if (e.target === playerModal) {
+        playerModal.classList.add('closing');
+        setTimeout(() => {
+          playerModal.classList.remove('active', 'closing');
+        }, 400);
+      }
     }
   });
 }
