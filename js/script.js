@@ -41,7 +41,13 @@ function createRandomCircle(rectangleElement) {
   circle.style.height = `${size}px`;
   circle.style.left = `${position.x}px`;
   circle.style.top = `${position.y}px`;
-  circle.style.backgroundColor = "rgba(74, 158, 255, 0.5)";
+  
+  // Use avatar color if available, otherwise default blue
+  const color = window.avatarColor 
+    ? `rgba(${window.avatarColor.r}, ${window.avatarColor.g}, ${window.avatarColor.b}, 0.5)`
+    : "rgba(74, 158, 255, 0.5)";
+  circle.style.backgroundColor = color;
+  
   circle.style.position = "absolute";
   circle.style.borderRadius = "50%";
   circle.style.filter = "blur(50px)";
@@ -101,14 +107,49 @@ const rectangleRight = document.querySelector('.rectangle-right');
 const rectangleButton = document.querySelector('.rectangle-button');
 
 let expanded = false;
+let touchStartY = 0;
+let touchEndY = 0;
 
-expandButton.addEventListener('click', () => {
+// Prevent accidental clicks during scroll on mobile
+expandButton.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+expandButton.addEventListener('touchend', (e) => {
+  touchEndY = e.changedTouches[0].clientY;
+  const touchDiff = Math.abs(touchEndY - touchStartY);
+  
+  // Only trigger if touch movement is less than 10px (not a scroll)
+  if (touchDiff < 10) {
+    e.preventDefault();
+    toggleExpand();
+  }
+});
+
+expandButton.addEventListener('click', (e) => {
+  // Only handle click on desktop (non-touch devices)
+  if (!('ontouchstart' in window)) {
+    toggleExpand();
+  }
+});
+
+function toggleExpand() {
   expanded = !expanded;
   arrow.classList.toggle('rotate');
   container.classList.toggle('move-left');
   rectangleRight.classList.toggle('show');
   rectangleButton.classList.toggle('move-right');
-});
+  
+  // Pause/play video in rectangle-right based on visibility
+  const ayanamiVideo = document.querySelector('.rectangle-right video');
+  if (ayanamiVideo) {
+    if (expanded) {
+      ayanamiVideo.play().catch(() => {});
+    } else {
+      ayanamiVideo.pause();
+    }
+  }
+}
 
 // Enter screen
 const enterScreen = document.getElementById('enter-screen');
@@ -206,24 +247,55 @@ function updateIslandTrackInfo() {
 }
 
 // Dynamic Island click to toggle modal
+let islandTouchStartY = 0;
+let islandTouchEndY = 0;
+
 if (dynamicIsland) {
-  dynamicIsland.addEventListener('click', (e) => {
+  // Handle touch events for mobile
+  dynamicIsland.addEventListener('touchstart', (e) => {
+    islandTouchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  
+  dynamicIsland.addEventListener('touchend', (e) => {
     // Don't toggle if clicking the play button
     if (e.target.closest('.island-play-btn')) {
       return;
     }
     
-    if (playerModal.classList.contains('active')) {
-      // Close with animation
-      playerModal.classList.add('closing');
-      setTimeout(() => {
-        playerModal.classList.remove('active', 'closing');
-      }, 400);
-    } else {
-      // Open with animation
-      playerModal.classList.add('active');
+    islandTouchEndY = e.changedTouches[0].clientY;
+    const touchDiff = Math.abs(islandTouchEndY - islandTouchStartY);
+    
+    // Only trigger if touch movement is less than 10px (not a scroll)
+    if (touchDiff < 10) {
+      e.preventDefault();
+      togglePlayerModal();
     }
   });
+  
+  // Handle click events for desktop
+  dynamicIsland.addEventListener('click', (e) => {
+    // Only handle click on desktop (non-touch devices)
+    if (!('ontouchstart' in window)) {
+      // Don't toggle if clicking the play button
+      if (e.target.closest('.island-play-btn')) {
+        return;
+      }
+      togglePlayerModal();
+    }
+  });
+}
+
+function togglePlayerModal() {
+  if (playerModal.classList.contains('active')) {
+    // Close with animation
+    playerModal.classList.add('closing');
+    setTimeout(() => {
+      playerModal.classList.remove('active', 'closing');
+    }, 400);
+  } else {
+    // Open with animation
+    playerModal.classList.add('active');
+  }
 }
 
 // Click on modal to close it
@@ -468,6 +540,14 @@ function switchTab(tabName) {
   const mediaInfo = document.getElementById('media-info');
   const mediaAbout = document.getElementById('media-about');
   
+  // Pause all videos first
+  if (mediaInfo && mediaInfo.tagName === 'VIDEO') {
+    mediaInfo.pause();
+  }
+  if (mediaAbout && mediaAbout.tagName === 'VIDEO') {
+    mediaAbout.pause();
+  }
+  
   // Fade out all media
   if (mediaInfo) mediaInfo.style.opacity = '0';
   if (mediaAbout) mediaAbout.style.opacity = '0';
@@ -491,6 +571,10 @@ function switchTab(tabName) {
       mediaInfo.classList.add('active');
       mediaInfo.style.opacity = '1';
       if (mediaAbout) mediaAbout.classList.remove('active');
+      // Play video if it's a video element and rectangle is visible
+      if (mediaInfo.tagName === 'VIDEO' && rectangleRight.classList.contains('show')) {
+        mediaInfo.play().catch(() => {});
+      }
     } else if (tabName === 'about' && mediaAbout) {
       mediaAbout.classList.add('active');
       mediaAbout.style.opacity = '1';
@@ -519,50 +603,53 @@ nextTabBtn.addEventListener('click', () => {
 
 
 
-// 3D card tilt effect - synchronized for all cards
+// 3D card tilt effect - synchronized for all cards (desktop only)
 setTimeout(() => {
-  const rectangle = document.querySelector('.rectangle');
-  const spotifyPlayer = document.querySelector('.spotifyplayer');
-  const rectangleRight = document.querySelector('.rectangle-right');
+  // Only enable on non-touch devices
+  if (!('ontouchstart' in window)) {
+    const rectangle = document.querySelector('.rectangle');
+    const spotifyPlayer = document.querySelector('.spotifyplayer');
+    const rectangleRight = document.querySelector('.rectangle-right');
 
-  document.body.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 2;
-    const y = (e.clientY / window.innerHeight - 0.5) * 2;
-    
-    const rotateY = x * 20;
-    const rotateX = -y * 20;
-    
-    const transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    
-    if (rectangle) {
-      rectangle.style.transition = 'none';
-      rectangle.style.transform = transform;
-    }
-    if (spotifyPlayer) {
-      spotifyPlayer.style.transition = 'none';
-      spotifyPlayer.style.transform = transform;
-    }
-    if (rectangleRight && rectangleRight.classList.contains('show')) {
-      rectangleRight.style.transition = 'none';
-      rectangleRight.style.transform = transform;
-    }
-  });
+    document.body.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      
+      const rotateY = x * 20;
+      const rotateX = -y * 20;
+      
+      const transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      
+      if (rectangle) {
+        rectangle.style.transition = 'none';
+        rectangle.style.transform = transform;
+      }
+      if (spotifyPlayer) {
+        spotifyPlayer.style.transition = 'none';
+        spotifyPlayer.style.transform = transform;
+      }
+      if (rectangleRight && rectangleRight.classList.contains('show')) {
+        rectangleRight.style.transition = 'none';
+        rectangleRight.style.transform = transform;
+      }
+    });
 
-  document.body.addEventListener('mouseleave', () => {
-    const resetTransform = 'perspective(1000px) rotateX(0) rotateY(0)';
-    if (rectangle) {
-      rectangle.style.transition = 'transform 0.5s ease-out';
-      rectangle.style.transform = resetTransform;
-    }
-    if (spotifyPlayer) {
-      spotifyPlayer.style.transition = 'transform 0.5s ease-out';
-      spotifyPlayer.style.transform = resetTransform;
-    }
-    if (rectangleRight) {
-      rectangleRight.style.transition = 'transform 0.5s ease-out';
-      rectangleRight.style.transform = resetTransform;
-    }
-  });
+    document.body.addEventListener('mouseleave', () => {
+      const resetTransform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      if (rectangle) {
+        rectangle.style.transition = 'transform 0.5s ease-out';
+        rectangle.style.transform = resetTransform;
+      }
+      if (spotifyPlayer) {
+        spotifyPlayer.style.transition = 'transform 0.5s ease-out';
+        spotifyPlayer.style.transform = resetTransform;
+      }
+      if (rectangleRight) {
+        rectangleRight.style.transition = 'transform 0.5s ease-out';
+        rectangleRight.style.transform = resetTransform;
+      }
+    });
+  }
 }, 1000);
 
 
