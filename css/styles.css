@@ -1482,8 +1482,14 @@ body {
     }
 
     .tabs-container {
-        top: 10px;
-        right: 10px;
+        position: absolute;
+        top: auto;
+        bottom: 60px;
+        right: 50%;
+        transform: translateX(50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
     }
 
     .tab-btn {
