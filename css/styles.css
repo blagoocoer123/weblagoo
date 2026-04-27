@@ -1595,12 +1595,6 @@ body {
     .rectangle, .spotifyplayer, .rectangle-right {
         transform: perspective(1000px) rotateX(0) rotateY(0) !important;
     }
-
-    /* Prevent video autoplay issues on mobile */
-    .ayanami video {
-        -webkit-playsinline: true;
-        playsinline: true;
-    }
 }
 
 @media screen and (max-width: 480px) {

@@ -139,21 +139,6 @@ function toggleExpand() {
   container.classList.toggle('move-left');
   rectangleRight.classList.toggle('show');
   rectangleButton.classList.toggle('move-right');
-  
-  // Play/pause video in rectangle-right based on visibility
-  const ayanamiVideo = document.querySelector('.rectangle-right video');
-  if (ayanamiVideo) {
-    if (expanded) {
-      // Only play when opening
-      setTimeout(() => {
-        ayanamiVideo.play().catch(() => {});
-      }, 300);
-    } else {
-      // Pause and reset when closing
-      ayanamiVideo.pause();
-      ayanamiVideo.currentTime = 0;
-    }
-  }
 }
 
 // Enter screen
@@ -574,14 +559,6 @@ function switchTab(tabName) {
   const mediaInfo = document.getElementById('media-info');
   const mediaAbout = document.getElementById('media-about');
   
-  // Pause all videos first
-  if (mediaInfo && mediaInfo.tagName === 'VIDEO') {
-    mediaInfo.pause();
-  }
-  if (mediaAbout && mediaAbout.tagName === 'VIDEO') {
-    mediaAbout.pause();
-  }
-  
   // Fade out all media
   if (mediaInfo) mediaInfo.style.opacity = '0';
   if (mediaAbout) mediaAbout.style.opacity = '0';
@@ -605,10 +582,6 @@ function switchTab(tabName) {
       mediaInfo.classList.add('active');
       mediaInfo.style.opacity = '1';
       if (mediaAbout) mediaAbout.classList.remove('active');
-      // Play video only if it's a video element and rectangle is visible and expanded
-      if (mediaInfo.tagName === 'VIDEO' && rectangleRight.classList.contains('show') && expanded) {
-        mediaInfo.play().catch(() => {});
-      }
     } else if (tabName === 'about' && mediaAbout) {
       mediaAbout.classList.add('active');
       mediaAbout.style.opacity = '1';
