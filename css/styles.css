@@ -747,6 +747,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  touch-action: pan-y;
 }
 
 .volume-icon {
@@ -769,13 +770,14 @@ body {
   border-radius: 10px;
   outline: none;
   cursor: pointer;
+  touch-action: none;
 }
 
 .volume-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   background: linear-gradient(135deg, #4A9EFF 0%, #64C8FF 100%);
   border-radius: 50%;
   cursor: pointer;
@@ -789,8 +791,8 @@ body {
 }
 
 .volume-bar::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   background: linear-gradient(135deg, #4A9EFF 0%, #64C8FF 100%);
   border-radius: 50%;
   cursor: pointer;
@@ -1595,6 +1597,22 @@ body {
     .control-btn svg {
         width: 18px;
         height: 18px;
+    }
+    
+    /* Improve volume control on mobile */
+    .volume-bar {
+        height: 8px;
+        min-height: 8px;
+    }
+    
+    .volume-bar::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .volume-bar::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
     }
 
     /* Disable 3D tilt effect on mobile */

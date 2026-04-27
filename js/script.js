@@ -520,6 +520,21 @@ volumeBar.addEventListener('input', () => {
   volumePercent.textContent = `${volumeBar.value}%`;
 });
 
+volumeBar.addEventListener('change', () => {
+  const volume = volumeBar.value / 100;
+  audio.volume = volume;
+  targetVolume = volume;
+  volumePercent.textContent = `${volumeBar.value}%`;
+});
+
+// Touch support for volume bar on mobile
+volumeBar.addEventListener('touchmove', (e) => {
+  const volume = volumeBar.value / 100;
+  audio.volume = volume;
+  targetVolume = volume;
+  volumePercent.textContent = `${volumeBar.value}%`;
+}, { passive: true });
+
 
 // Discord copy to clipboard with animation
 const discordCopy = document.getElementById('discord-copy');
