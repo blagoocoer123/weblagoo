@@ -210,6 +210,30 @@ let isSeeking = false;
 // Set initial volume
 audio.volume = targetVolume;
 
+// Check if volume control is supported
+function checkVolumeSupport() {
+  const testVolume = 0.5;
+  audio.volume = testVolume;
+  const isSupported = Math.abs(audio.volume - testVolume) < 0.01;
+  if (!isSupported) {
+    console.warn('Volume control not supported on this device/browser');
+    // Hide volume controls on iOS where it's not supported
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      const volumeContainer = document.querySelector('.volume-container');
+      if (volumeContainer) {
+        volumeContainer.style.display = 'none';
+      }
+    }
+  }
+  audio.volume = targetVolume; // Restore target volume
+  return isSupported;
+}
+
+// Check support after user interaction
+setTimeout(() => {
+  checkVolumeSupport();
+}, 1000);
+
 function loadTrack(index) {
   const track = tracks[index];
   audio.src = track.src;
@@ -504,35 +528,57 @@ progressBar.addEventListener('mousedown', () => {
   isSeeking = true;
 });
 
+progressBar.addEventListener('touchstart', () => {
+  isSeeking = true;
+}, { passive: true });
+
 progressBar.addEventListener('mouseup', () => {
   isSeeking = false;
 });
+
+progressBar.addEventListener('touchend', () => {
+  isSeeking = false;
+}, { passive: true });
 
 progressBar.addEventListener('input', () => {
   const time = (progressBar.value / 100) * audio.duration;
   audio.currentTime = time;
 });
 
-volumeBar.addEventListener('input', () => {
-  const volume = volumeBar.value / 100;
-  audio.volume = volume;
-  targetVolume = volume;
-  volumePercent.textContent = `${volumeBar.value}%`;
+progressBar.addEventListener('change', () => {
+  const time = (progressBar.value / 100) * audio.duration;
+  audio.currentTime = time;
+  isSeeking = false;
 });
 
-volumeBar.addEventListener('change', () => {
+// Volume control with better mobile support
+function updateVolume() {
   const volume = volumeBar.value / 100;
   audio.volume = volume;
   targetVolume = volume;
-  volumePercent.textContent = `${volumeBar.value}%`;
-});
+  volumePercent.textContent = `${Math.round(volumeBar.value)}%`;
+  console.log('Volume updated:', volume); // Debug log
+}
+
+volumeBar.addEventListener('input', updateVolume);
+volumeBar.addEventListener('change', updateVolume);
+volumeBar.addEventListener('touchend', updateVolume);
 
 // Touch support for volume bar on mobile
+let isTouchingVolume = false;
+volumeBar.addEventListener('touchstart', () => {
+  isTouchingVolume = true;
+}, { passive: true });
+
 volumeBar.addEventListener('touchmove', (e) => {
-  const volume = volumeBar.value / 100;
-  audio.volume = volume;
-  targetVolume = volume;
-  volumePercent.textContent = `${volumeBar.value}%`;
+  if (isTouchingVolume) {
+    updateVolume();
+  }
+}, { passive: true });
+
+volumeBar.addEventListener('touchend', () => {
+  isTouchingVolume = false;
+  updateVolume();
 }, { passive: true });
 
 

@@ -771,6 +771,11 @@ body {
   outline: none;
   cursor: pointer;
   touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.volume-bar:active {
+  cursor: grabbing;
 }
 
 .volume-bar::-webkit-slider-thumb {
