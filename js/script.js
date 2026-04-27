@@ -140,13 +140,18 @@ function toggleExpand() {
   rectangleRight.classList.toggle('show');
   rectangleButton.classList.toggle('move-right');
   
-  // Pause/play video in rectangle-right based on visibility
+  // Play/pause video in rectangle-right based on visibility
   const ayanamiVideo = document.querySelector('.rectangle-right video');
   if (ayanamiVideo) {
     if (expanded) {
-      ayanamiVideo.play().catch(() => {});
+      // Only play when opening
+      setTimeout(() => {
+        ayanamiVideo.play().catch(() => {});
+      }, 300);
     } else {
+      // Pause and reset when closing
       ayanamiVideo.pause();
+      ayanamiVideo.currentTime = 0;
     }
   }
 }
@@ -600,8 +605,8 @@ function switchTab(tabName) {
       mediaInfo.classList.add('active');
       mediaInfo.style.opacity = '1';
       if (mediaAbout) mediaAbout.classList.remove('active');
-      // Play video if it's a video element and rectangle is visible
-      if (mediaInfo.tagName === 'VIDEO' && rectangleRight.classList.contains('show')) {
+      // Play video only if it's a video element and rectangle is visible and expanded
+      if (mediaInfo.tagName === 'VIDEO' && rectangleRight.classList.contains('show') && expanded) {
         mediaInfo.play().catch(() => {});
       }
     } else if (tabName === 'about' && mediaAbout) {
