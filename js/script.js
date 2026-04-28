@@ -216,7 +216,6 @@ function checkVolumeSupport() {
   audio.volume = testVolume;
   const isSupported = Math.abs(audio.volume - testVolume) < 0.01;
   if (!isSupported) {
-    console.warn('Volume control not supported on this device/browser');
     // Hide volume controls on iOS where it's not supported
     if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
       const volumeContainer = document.querySelector('.volume-container');
@@ -557,7 +556,6 @@ function updateVolume() {
   audio.volume = volume;
   targetVolume = volume;
   volumePercent.textContent = `${Math.round(volumeBar.value)}%`;
-  console.log('Volume updated:', volume); // Debug log
 }
 
 volumeBar.addEventListener('input', updateVolume);
@@ -737,13 +735,11 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Console warning
-console.log('%cСТОП!', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cЭто функция браузера для разработчиков. Если кто-то сказал тебе скопировать что-то сюда - это мошенничество!', 'font-size: 16px;');
-
 
 // View counter - using Vercel serverless function with real-time updates
 let currentViews = 0;
+let lastFetchTime = 0;
+const FETCH_COOLDOWN = 5000; // 5 seconds cooldown
 
 function animateCounter(element, start, end, duration) {
   const range = end - start;
@@ -764,26 +760,54 @@ function updateViewCounter() {
   const viewCountElement = document.getElementById('view-count');
   const viewCounterContainer = document.querySelector('.view-counter');
   
-  fetch('/api/views')
-    .then(response => response.json())
+  // Rate limiting
+  const now = Date.now();
+  if (now - lastFetchTime < FETCH_COOLDOWN) {
+    return;
+  }
+  lastFetchTime = now;
+  
+  // Timeout for fetch request
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  
+  fetch('/api/views', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    signal: controller.signal
+  })
+    .then(response => {
+      clearTimeout(timeoutId);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then(data => {
-      const newViews = data.views;
-      
-      if (newViews !== currentViews) {
-        // Add updating animation
-        viewCounterContainer.classList.add('updating');
+      // Validate response data
+      if (typeof data.views === 'number' && data.views >= 0) {
+        const newViews = Math.floor(data.views);
         
-        // Animate the number change
-        animateCounter(viewCountElement, currentViews, newViews, 500);
-        currentViews = newViews;
-        
-        // Remove animation class after transition
-        setTimeout(() => {
-          viewCounterContainer.classList.remove('updating');
-        }, 300);
+        if (newViews !== currentViews) {
+          // Add updating animation
+          viewCounterContainer.classList.add('updating');
+          
+          // Animate the number change
+          animateCounter(viewCountElement, currentViews, newViews, 500);
+          currentViews = newViews;
+          
+          // Remove animation class after transition
+          setTimeout(() => {
+            viewCounterContainer.classList.remove('updating');
+          }, 300);
+        }
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      clearTimeout(timeoutId);
       if (viewCountElement.textContent !== '???') {
         viewCountElement.textContent = '???';
       }
